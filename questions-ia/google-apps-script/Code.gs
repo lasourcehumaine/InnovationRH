@@ -27,3 +27,25 @@ function doPost(e) {
     if (lock.hasLock()) lock.releaseLock();
   }
 }
+
+/** Diagnostic sans appel de l'application : choisir testWrite dans Apps Script puis Exécuter.
+ * Insère une ligne de test dans le tableur cible, ou affiche l'erreur exacte dans Exécutions.
+ */
+function testWrite() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const tab = ss.getSheetByName(TAB);
+  if (!tab) throw new Error('Onglet introuvable : ' + TAB);
+  tab.appendRow([new Date(), 'TEST DIRECT APPS SCRIPT', 'À traiter', '']);
+  Logger.log('Écriture confirmée dans : ' + ss.getUrl());
+}
+
+/** Diagnostic en ouvrant l’URL /exec dans le navigateur, sans écrire de question. */
+function doGet() {
+  try {
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    if (!ss.getSheetByName(TAB)) throw new Error('Onglet introuvable : ' + TAB);
+    return ContentService.createTextOutput('OK - tableur accessible : ' + ss.getName());
+  } catch (e) {
+    return ContentService.createTextOutput('ERREUR : ' + e.message);
+  }
+}
