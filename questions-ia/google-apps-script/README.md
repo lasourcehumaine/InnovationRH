@@ -1,6 +1,6 @@
 # Questions IA : branchement Google Sheets
 
-Le Google Sheets de collecte est : https://docs.google.com/spreadsheets/d/1i6BD9DRaJoGXFKHRAlBb6pPcwx2e1ZZ1y5mXg-d0eWQ/edit
+Le Google Sheets de collecte est : https://docs.google.com/spreadsheets/d/1NowoEJb8qT4Mt6QFsgc1qbupIQ6YH_kSAb3JN2jYmmk/edit
 
 1. Ouvrir le tableur, puis Extensions > Apps Script.
 2. Remplacer le contenu du fichier Code.gs par celui de ce dossier.
