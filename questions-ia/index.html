@@ -17,9 +17,30 @@
 .pill,.qitem{border-color:#efdce9}.chip.active{background:#f8dce9;border-color:#ca4e90;color:#6b2c68}
 .msg{background:#f9eaf3;color:#682f60}.demo{background:#fff3c9;color:#664610}
 @media(prefers-reduced-motion:no-preference){.formcard{animation:up .45s ease-out}@keyframes up{from{opacity:.1;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}}
+
+.hero{background:#fff8fa;min-height:100vh;padding:0 0 48px;color:#2e2940;overflow:visible}
+.event-banner{position:relative;overflow:hidden;background:linear-gradient(107deg,#58366f 0%,#9c5b94 52%,#ed726b 100%);color:#fff;padding:34px max(24px,calc((100vw - 1000px)/2)) 30px}
+.event-banner-inner{position:relative;z-index:1;max-width:1000px;margin:0 auto;min-height:220px}
+.event-kicker{font-size:clamp(16px,2.2vw,22px);font-weight:500;letter-spacing:.015em}
+.event-title{position:relative;z-index:2;font-weight:850;line-height:.98;letter-spacing:-.05em;font-size:clamp(43px,5.7vw,73px);margin:12px 0 16px;max-width:700px}
+.event-subtitle{position:relative;z-index:2;font-size:clamp(16px,2.1vw,23px);margin:0 0 20px;max-width:680px}
+.event-date{position:relative;z-index:2;display:inline-block;padding:9px 19px;border-radius:40px;background:#864878;font-size:clamp(14px,1.65vw,20px);font-weight:750}
+.event-art{position:absolute;inset:0;pointer-events:none;z-index:1}
+.art-question{position:absolute;right:19%;top:14px;font-size:155px;line-height:1;color:#e49bbf80;font-weight:850}
+.art-pill{position:absolute;right:-105px;height:35px;border-radius:50px}
+.art-pill-one{top:4px;width:240px;background:#ec6b62}
+.art-pill-two{top:69px;width:190px;background:#d980ac}
+.art-pill-three{top:124px;width:240px;background:#82437c}
+.hero:before,.hero:after{content:none}
+.hero>.wrap{max-width:650px;padding:0 20px}
+.form-intro{font-size:17px;line-height:1.5;font-weight:600;color:#58366f;margin:27px 0 15px}
+.formcard{box-shadow:0 12px 38px #58366f20}
+.small{color:#65526b}
+.focuslink{color:#6b3c80}
+@media(max-width:650px){.event-banner{padding:27px 21px 25px}.event-banner-inner{min-height:235px}.event-title{font-size:clamp(42px,10vw,60px);max-width:90%}.event-subtitle{max-width:85%;line-height:1.35}.event-date{font-size:14px;padding:8px 13px}.art-question{font-size:120px;right:0;top:65px;opacity:.45}.art-pill{right:-120px;opacity:.5}.form-intro{margin-top:24px}.hero>.wrap{padding:0 16px}.formcard{padding:22px}}
 </style></head><body>
 <div id="demoBanner" class="demo hide">MODE DÉMONSTRATION : les questions sont conservées uniquement sur cet appareil. Aucun envoi collectif.</div>
-<section id="participant" class="hero"><div class="wrap"><div class="top"><span>INNOVATION RH & CIE <span class="brand">2026</span></span><span class="logo" aria-hidden="true">?</span></div><div class="eyebrow">Le micro est à vous</div><h1 class="heading">La question que vous n'avez pas osé poser.</h1><p class="intro">L'IA en RH soulève autant de questions qu'elle apporte de réponses. Et si on prenait le temps de poser la vôtre ?</p>
+<section id="participant" class="hero"><header class="event-banner"><div class="event-banner-inner"><div class="event-kicker">Innovation RH &amp; Cie</div><h1 class="event-title">Demandez-moi<br>n’importe quoi</h1><p class="event-subtitle">Vos questions sur la techno et l’IA en RH</p><span class="event-date">Mardi 3 novembre 2026</span><div class="event-art" aria-hidden="true"><span class="art-question">?</span><span class="art-pill art-pill-one"></span><span class="art-pill art-pill-two"></span><span class="art-pill art-pill-three"></span></div></div></header><div class="wrap"><p class="form-intro">Une question, un doute ou un cas concret ? Posez votre question anonymement.</p>
 <div id="formCard" class="formcard"><form id="questionForm"><label for="q">Quelle question aimeriez-vous poser sur l'IA ou les technologies RH ?</label><textarea id="q" required maxlength="500" minlength="8" placeholder="Votre question ici…" aria-describedby="charcount"></textarea><div class="meta"><span>Anonyme · Aucune inscription</span><span id="charcount">0 / 500</span></div><div id="formMsg" class="msg hide" role="alert"></div><button id="send" class="btn" type="submit">Envoyer ma question  ↗</button></form></div>
 <div id="thanks" class="formcard hide" role="status"><div class="check">✓</div><h2>Question transmise. Merci !</h2><p>La transmission a été lancée. La réception définitive sera validée par l’équipe dans son tableau Google.</p><p id="remaining" class="note"></p><button id="another" class="btn secondary">Poser une autre question</button></div><p class="small">Des questions pourront être traitées en direct selon le temps disponible. Une sélection sera reprise dans le cahier postévénement. Évitez toute information personnelle ou confidentielle.</p><p class="small"><a class="focuslink" href="#admin">Accès animatrice</a></p></div></section>
 <section id="admin" class="admin hide"><div class="adminheader"><div style="max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center"><strong>INNOVATION RH & CIE · ANIMATRICE</strong><a href="#" style="color:#fff">Retour au formulaire</a></div></div><div class="adminmain"><h1>Les questions reçues</h1><p>Les questions sont centralisées dans un Google Sheets privé. Tu peux y indiquer « Retenue » pour les trois questions choisies et exporter les données.</p><p><a class="btn" href="https://docs.google.com/spreadsheets/d/1NowoEJb8qT4Mt6QFsgc1qbupIQ6YH_kSAb3JN2jYmmk/edit" target="_blank" rel="noopener noreferrer">Ouvrir le tableau Google ↗</a></p><p class="note">Seules les personnes ayant accès au tableur peuvent le consulter. Aucun mot de passe administrateur n’est exposé dans cette page.</p></div></section>
