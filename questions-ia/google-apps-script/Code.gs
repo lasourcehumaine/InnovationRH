@@ -11,18 +11,21 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   try {
     const params = e && e.parameter ? e.parameter : {};
+    console.log('doPost reçu ; paramètre question présent : ' + Object.prototype.hasOwnProperty.call(params, 'question'));
     const q = String(params.question || '').trim();
     if (q.length < 5 || q.length > 500) throw new Error('Question invalide');
     // Empêcher l'injection de formules à partir du texte des participants.
     const safe = /^[=+@\-]/.test(q) ? "'" + q : q;
     lock.waitLock(10000);
-    SpreadsheetApp.openById(SHEET_ID).getSheetByName(TAB)
-      .appendRow([new Date(), safe, 'À traiter', '']);
+    const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(TAB);
+    if (!sheet) throw new Error('Onglet introuvable : ' + TAB);
+    sheet.appendRow([new Date(), safe, 'À traiter', '']);
+    console.log('Enregistrement effectué dans ' + SHEET_ID);
     return ContentService.createTextOutput(JSON.stringify({ok:true}))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({ok:false,error:String(err)}))
-      .setMimeType(ContentService.MimeType.JSON);
+    console.error('ECHEC doPost : ' + String(err && err.stack || err));
+    throw err;
   } finally {
     if (lock.hasLock()) lock.releaseLock();
   }
