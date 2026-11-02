@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vous feriez quoi, vous ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Palette tirée du programme Innovation RH & Cie 2026 : violet profond, mauve, corail, rouge-orangé d'appel */
+  --plum:#4b2f69;
+  --mauve:#b974aa;
+  --coral:#df6766;
+  --flame:#e8432a;
+  --mist:#f6f1f7;
+  --ink-soft:#6e5a82;
+  --line:#e6dcea;
+  --white:#ffffff;
+  --display:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --grad:linear-gradient(120deg,#51366d 0%,#9a5f9e 45%,#c96b8f 70%,#e2665f 100%);
+  /* Mise en page : une colonne téléphone, un bandeau dégradé comme la couverture du programme ; mode écran géant via #ecran */
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--mist);color:var(--plum);font-family:var(--body);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;border:0}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--flame);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+
+/* ---------- Bandeau ---------- */
+.band{background:var(--grad);color:var(--white);padding:18px 18px 22px;position:relative;overflow:hidden}
+.band::before,.band::after{content:"";position:absolute;border-radius:99px;height:22px}
+.band::before{width:150px;right:-30px;top:16px;background:linear-gradient(90deg,#e2665f,#f08a6a);opacity:.9}
+.band::after{width:90px;right:40px;top:46px;background:rgba(255,255,255,.18)}
+.band .ev{position:relative;z-index:1;max-width:640px;margin:0 auto}
+.ev-name{font-weight:800;font-size:22px;letter-spacing:-.01em;line-height:1.05}
+.ev-name small{display:block;font-weight:600;font-size:14px;letter-spacing:.02em;opacity:.95;margin-top:2px}
+.ev-tag{font-size:13px;font-weight:500;opacity:.92;margin-top:6px}
+.ev-tag b{color:#ffd9cf;font-weight:700}
+
+/* ---------- Carte ---------- */
+.wrap{max-width:640px;margin:0 auto;padding:18px 16px 28px}
+.card{background:var(--white);border-radius:22px;padding:22px 20px;box-shadow:0 10px 30px rgba(75,47,105,.08);border:1px solid var(--line)}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--coral)}
+.steps{display:flex;gap:6px;margin:10px 0 16px}
+.steps span{flex:1;height:6px;border-radius:6px;background:var(--line)}
+.steps span.on{background:var(--grad)}
+.title{font-size:clamp(25px,6.5vw,32px);font-weight:800;line-height:1.12;letter-spacing:-.015em}
+.story{font-size:17px;margin:14px 0 6px;color:var(--plum)}
+.q{font-size:18px;font-weight:700;margin:18px 0 10px}
+.muted{color:var(--ink-soft);font-size:14px}
+
+/* ---------- Options ---------- */
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--mist);color:var(--plum);border:2px solid transparent;border-radius:16px;padding:14px 14px;font-weight:600;font-size:16px;line-height:1.35;transition:border-color .15s,background .15s,transform .1s}
+.opt:active{transform:scale(.99)}
+.opt .l{flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--white);color:var(--coral);font-weight:800}
+.opt.sel{border-color:var(--coral);background:#fdeeee}
+.opt.sel .l{background:var(--coral);color:var(--white)}
+
+/* ---------- Boutons ---------- */
+.row{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap}
+.btn{background:var(--flame);color:var(--white);font-weight:700;border-radius:99px;padding:14px 22px;font-size:16px;box-shadow:0 6px 16px rgba(232,67,42,.25)}
+.btn:disabled{opacity:.4;box-shadow:none;cursor:not-allowed}
+.btn.wide{width:100%}
+.ghost{background:transparent;color:var(--ink-soft);font-weight:600;padding:12px 6px;font-size:15px}
+
+/* ---------- Révélation / cadenas ---------- */
+.reveal{border-radius:16px;padding:16px 18px;background:linear-gradient(120deg,rgba(185,116,170,.14),rgba(223,103,102,.14));border-left:5px solid var(--coral);margin:16px 0}
+.reveal b{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);margin-bottom:4px}
+.lock{text-align:center;padding:8px 0}
+.lock .ico{width:64px;height:64px;margin:6px auto 12px;border-radius:20px;background:var(--grad);display:grid;place-items:center}
+.code{display:flex;gap:8px;margin-top:16px}
+.code input{flex:1;min-width:0;font:inherit;font-size:20px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:center;border:2px solid var(--line);border-radius:14px;padding:12px;color:var(--plum);background:var(--white)}
+.code input.bad{border-color:var(--flame);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.hint{margin-top:10px;font-size:14px;color:var(--ink-soft);min-height:21px}
+
+/* ---------- Discussion ---------- */
+.pair{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:14px 0}
+.chip{background:var(--mist);border-radius:14px;padding:10px;text-align:center}
+.chip small{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.chip strong{font-size:26px;font-weight:800;color:var(--coral)}
+.arrow{font-weight:800;color:var(--mauve)}
+.verdict{font-weight:700;text-align:center;margin:4px 0 12px}
+.talk{background:var(--plum);color:var(--white);border-radius:18px;padding:18px}
+.talk .eyebrow{color:#ffc2b5}
+.talk p{font-size:19px;font-weight:700;line-height:1.35;margin:6px 0 0}
+.tip{font-size:14px;margin-top:12px;color:var(--ink-soft)}
+
+/* ---------- Fin ---------- */
+.journey{display:grid;gap:8px;margin:14px 0}
+.jrow{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--mist);border-radius:14px;padding:12px 14px;font-weight:600;font-size:15px}
+.jrow .v{font-weight:800;color:var(--coral);white-space:nowrap;font-variant-numeric:tabular-nums}
+.big{font-size:44px;font-weight:800;line-height:1;color:var(--coral)}
+
+footer{max-width:640px;margin:0 auto;padding:0 16px 28px;font-size:12.5px;color:var(--ink-soft);text-align:center}
+
+/* ---------- Mode écran géant (#ecran) ---------- */
+body.stage{background:var(--grad);color:var(--white);min-height:100%}
+.stage-wrap{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,48px);min-height:100%;display:flex;flex-direction:column;gap:24px}
+.stage-top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap}
+.stage-top .ev-name{font-size:clamp(20px,2.2vw,30px)}
+.stage-top .count{font-weight:700;font-size:clamp(14px,1.4vw,18px);opacity:.9}
+.stage-main{flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px}
+.s-eyebrow{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:clamp(13px,1.3vw,18px);color:#ffd9cf}
+.s-title{font-size:clamp(34px,5vw,72px);font-weight:800;line-height:1.05;letter-spacing:-.02em}
+.s-text{font-size:clamp(20px,2.3vw,32px);line-height:1.4;max-width:62ch;font-weight:500}
+.s-opts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.s-opt{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:20px;padding:18px 20px;font-size:clamp(17px,1.7vw,24px);font-weight:600;display:flex;gap:14px;align-items:flex-start}
+.s-opt .l{flex:none;width:42px;height:42px;border-radius:12px;background:var(--white);color:var(--coral);display:grid;place-items:center;font-weight:800}
+.s-box{background:rgba(255,255,255,.95);color:var(--plum);border-radius:24px;padding:clamp(20px,3vw,36px)}
+.s-box .s-text{font-weight:600}
+.s-code{display:inline-flex;align-items:center;gap:18px;background:var(--plum);color:var(--white);border-radius:20px;padding:14px 26px;font-size:clamp(18px,1.8vw,24px);font-weight:700}
+.s-code strong{font-size:clamp(34px,4.4vw,62px);letter-spacing:.14em;color:#ffc2b5}
+.timer{font-size:clamp(56px,8vw,120px);font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.stage-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.s-btn{background:rgba(255,255,255,.18);color:var(--white);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:12px 20px;font-weight:700}
+.s-btn.main{background:var(--white);color:var(--plum)}
+.s-dots{display:flex;gap:8px}
+.s-dots span{width:34px;height:7px;border-radius:7px;background:rgba(255,255,255,.3)}
+.s-dots span.on{background:var(--white)}
+.s-hands{display:grid;gap:14px}
+.s-hand{background:rgba(255,255,255,.14);border-radius:18px;padding:16px 22px;font-size:clamp(20px,2.2vw,30px);font-weight:700}
+@media (max-width:760px){.s-opts{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function(){
+"use strict";
+
+/* ------------------------------------------------------------------
+   Contenu : les trois scénarios (texte fourni dans le kit brise-glace)
+   ------------------------------------------------------------------ */
+var CASES=[
+ {title:"Le collègue qui travaille deux fois plus vite",topic:"Performance · Équité · Initiative",code:"TEMPS",
+  story:"Une personne de votre équipe réalise désormais en 3 heures, avec l’IA, un travail qui lui en prenait 6. La qualité est identique. Elle respecte ses livrables et ne parle pas de sa méthode.",
+  question:"Vous êtes son gestionnaire. Votre première décision ?",
+  options:["Je la félicite : les résultats sont au rendez-vous.","Je lui demande de consacrer ce temps à d’autres tâches.","Je lui propose de partager sa méthode avec l’équipe.","Je revois les objectifs et la façon d’évaluer le travail."],
+  reveal:"Vous apprenez qu’elle avait proposé cette méthode à son gestionnaire, qui avait refusé de la tester. Elle a expérimenté de son côté, sans exposer de données confidentielles ni enfreindre de règle connue.",
+  after:"Après cette information, quelle décision privilégiez-vous ?",
+  afterOptions:["Je reconnais son initiative et conserve ses objectifs actuels.","Je négocie avec elle la façon de partager les gains.","Je propose un test collectif avant tout changement d’objectifs.","Je commence par revoir notre façon d’accueillir les idées."],
+  discuss:"Quand quelqu’un gagne du temps grâce à une bonne idée, qui devrait bénéficier de ce gain ?"},
+ {title:"La meilleure candidature n’est pas celle que vous croyez",topic:"Recrutement · Preuve · Authenticité",code:"PREUVE",
+  story:"Pour un poste, deux personnes possèdent les compétences indispensables. La candidature A est parfaitement rédigée et convaincante. La candidature B est moins soignée, mais son expérience correspond tout autant. Vous ne pouvez inviter qu’une personne à un premier entretien cette semaine.",
+  question:"Sur quelle base prenez-vous votre décision ?",
+  options:["J’invite A, qui présente clairement ses réalisations.","J’invite B, car son expérience semble aussi solide.","Je demande à chacune une même courte preuve liée au poste.","Je priorise les faits vérifiables du parcours, pas la présentation."],
+  reveal:"Vous apprenez que A a utilisé une IA pour mieux présenter son expérience, tandis que B a été accompagnée par un conseiller en emploi. Aucune des deux n’a inventé de compétences.",
+  after:"Cette information modifie-t-elle votre méthode ?",
+  afterOptions:["Non, j’évalue uniquement les compétences démontrables.","Oui, je veux discuter de l’usage de l’IA avec A.","Je donne aux deux une même occasion de démontrer leurs acquis.","Je réexamine les critères de tri du processus."],
+  discuss:"Que mesure-t-on vraiment quand on classe des candidatures sur la qualité de leur présentation ?"},
+ {title:"L’employé qui refuse d’utiliser l’IA",topic:"Adoption · Confiance · Jugement",code:"HUMAIN",
+  story:"Votre organisation déploie un outil d’IA approuvé et forme le personnel. Une personne expérimentée refuse de l’utiliser. Son travail reste de qualité, mais elle est plus lente que ses collègues.",
+  question:"Quelle est votre première réaction ?",
+  options:["Je respecte son choix tant que les objectifs sont atteints.","Je cherche à comprendre précisément ses objections.","Je fixe une échéance d’adoption de l’outil.","Je propose une comparaison réelle des deux méthodes."],
+  reveal:"Vous apprenez qu’elle avait testé l’outil, documenté plusieurs erreurs et envoyé ses résultats. Personne ne lui a répondu. Les collègues qui utilisent l’outil corrigent eux aussi régulièrement ses sorties, sans le signaler.",
+  after:"Que faites-vous maintenant ?",
+  afterOptions:["Je suspends l’obligation et fais examiner les erreurs.","Je réunis l’équipe pour comparer les résultats.","Je garde l’objectif d’adoption, avec contrôle qualité renforcé.","Je confie à cette personne un rôle dans l’amélioration de l’outil."],
+  discuss:"Comment distinguer une résistance au changement d’un signal d’alerte pertinent ?"}
+];
+var L="ABCD";
+var root=document.getElementById("root");
+
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function norm(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-zA-Z]/g,"").toUpperCase()}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function load(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+
+var BAND='<header class="band"><div class="ev"><div class="ev-name">Innovation RH &amp; Cie<small>Propulser le potentiel humain</small></div>'+
+ '<div class="ev-tag">L’IA en RH : gagner du temps <b>sans perdre l’humain</b> · 3 novembre 2026</div></div></header>';
+var FOOT='<footer>Vos choix restent sur votre téléphone. Aucune réponse n’est envoyée ni collectée.</footer>';
+var LOCK_SVG='<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+
+/* ==================================================================
+   MODE PARTICIPANT (téléphone)
+   ================================================================== */
+var P=load("vfq-p")||{};
+P={i:P.i|0,step:(P.step==="wait"?"vote2":P.step)||"intro",a:P.a||{},open:P.open||{}};
+function saveP(){store("vfq-p",P)}
+function key(i,when){return i+(when==="after"?"a":"b")}
+
+function stepsBar(i){return '<div class="steps">'+CASES.map(function(_,k){return '<span class="'+(k<=i?"on":"")+'"></span>'}).join("")+'</div>'}
+function head(i){var c=CASES[i];return '<div class="eyebrow">Situation '+(i+1)+' sur 3 · '+esc(c.topic)+'</div>'+stepsBar(i)+'<h1 class="title">'+esc(c.title)+'</h1>'}
+function opts(arr,k){return '<div class="opts" role="radiogroup">'+arr.map(function(t,n){var s=P.a[k]===n;return '<button type="button" role="radio" aria-checked="'+s+'" class="opt'+(s?" sel":"")+'" data-pick="'+k+'" data-n="'+n+'"><span class="l">'+L[n]+'</span><span>'+esc(t)+'</span></button>'}).join("")+'</div>'}
+
+function renderP(){
+ document.body.className="";
+ var i=P.i,c=CASES[i],h="";
+ if(P.step==="intro"){
+  h='<div class="card"><div class="eyebrow">Brise-glace · 9 h 10</div><h1 class="title" style="margin-top:8px">Vous feriez quoi, vous ?</h1>'+
+   '<p class="story">Trois situations où l’IA s’invite au travail. Vous décidez seul·e. Puis une information nouvelle arrive, et vous pouvez changer d’avis. Enfin, discutez de votre choix ensemble.</p>'+
+   '<p class="story"><strong>Pas besoin de connaître l’IA pour jouer.</strong> Il n’y a pas de bonne réponse, et pas de podium.</p>'+
+   '<div class="row"><button class="btn wide" id="go">Commencer</button></div></div>';
+ }else if(P.step==="vote1"){
+  h='<div class="card">'+head(i)+'<p class="story">'+esc(c.story)+'</p><p class="q">'+esc(c.question)+'</p>'+opts(c.options,key(i,"before"))+
+   '<div class="row"><button class="ghost" id="back">Retour</button><button class="btn" id="next" '+(P.a[key(i,"before")]===undefined?"disabled":"")+'>Je fais ce choix</button></div></div>';
+ }else if(P.step==="vote2"){
+  h='<div class="card">'+head(i)+'<div class="reveal"><b>Nouvelle information</b>'+esc(c.reveal)+'</div><p class="q">'+esc(c.after)+'</p>'+opts(c.afterOptions,key(i,"after"))+
+   '<div class="row"><span class="muted">Premier choix : '+L[P.a[key(i,"before")]]+'</span><button class="btn" id="next" '+(P.a[key(i,"after")]===undefined?"disabled":"")+'>Je confirme</button></div></div>';
+ }else if(P.step==="talk"){
+  var b=P.a[key(i,"before")],a=P.a[key(i,"after")];
+  h='<div class="card">'+head(i)+
+   '<div class="pair"><div class="chip"><small>Avant</small><strong>'+L[b]+'</strong></div><div class="arrow" aria-hidden="true">→</div><div class="chip"><small>Après</small><strong>'+L[a]+'</strong></div></div>'+
+   '<p class="muted" style="margin:0 0 4px">Avant : '+esc(c.options[b])+'</p><p class="muted" style="margin:0 0 12px">Après : '+esc(c.afterOptions[a])+'</p>'+
+   '<div class="talk"><div class="eyebrow">À votre table · 5 minutes</div><p>'+esc(c.discuss)+'</p></div>'+
+   '<p class="tip">Pour lancer la discussion : « Moi, ce qui m’a fait hésiter, c’est… »</p>'+
+   '<div class="row"><button class="ghost" id="back">Retour</button><button class="btn" id="next">'+(i<2?"Situation suivante":"Voir mon parcours")+'</button></div></div>';
+ }else{
+  var ch=0,rows=CASES.map(function(cc,k){var x=P.a[key(k,"before")],y=P.a[key(k,"after")];
+   // les deux votes ont des choix différents : on compare les intentions, pas les lettres
+   return '<div class="jrow"><span>'+(k+1)+'. '+esc(cc.title)+'</span><span class="v">'+(x===undefined?"?":L[x])+' → '+(y===undefined?"?":L[y])+'</span></div>'}).join("");
+  h='<div class="card"><div class="eyebrow">Votre parcours</div><h1 class="title" style="margin-top:8px">Qu’est-ce qui a fait bouger votre jugement ?</h1>'+
+   '<div class="journey">'+rows+'</div>'+
+   '<p class="story">On n’a pas cherché les bonnes réponses. On a regardé ce qui change nos décisions : l’information disponible, nos critères, et le regard des autres.</p>'+
+   '<div class="row"><button class="ghost" id="back">Retour</button><button class="ghost" id="reset">Recommencer</button></div></div>';
+ }
+ root.innerHTML=BAND+'<main class="wrap">'+h+'</main>'+FOOT;
+ bindP();
+}
+
+function bindP(){
+ var q=function(id){return document.getElementById(id)};
+ Array.prototype.forEach.call(root.querySelectorAll("[data-pick]"),function(el){el.addEventListener("click",function(){P.a[el.getAttribute("data-pick")]=+el.getAttribute("data-n");saveP();renderP()})});
+ if(q("go"))q("go").onclick=function(){P.step="vote1";go()};
+ if(q("next"))q("next").onclick=function(){
+  if(P.step==="vote1")P.step="vote2";
+  else if(P.step==="vote2")P.step="talk";
+  else if(P.step==="talk"){if(P.i<2){P.i++;P.step="vote1"}else P.step="end"}
+  go()};
+ if(q("back"))q("back").onclick=function(){
+  if(P.step==="vote1"){if(P.i===0)P.step="intro";else{P.i--;P.step="talk"}}
+  else if(P.step==="vote2")P.step="vote1";
+  else if(P.step==="talk")P.step="vote2";
+  else if(P.step==="end")P.step="talk";
+  go()};
+ if(q("reset"))q("reset").onclick=function(){
+  var b=q("reset");if(b.dataset.sure){P={i:0,step:"intro",a:{},open:{}};go()}else{b.dataset.sure="1";b.textContent="Toucher encore pour effacer"}};
+}
+function go(){saveP();renderP();window.scrollTo(0,0)}
+
+/* ==================================================================
+   MODE ÉCRAN GÉANT (#ecran) : projeté par la régie
+   ================================================================== */
+var S=load("vfq-s")||{};S={n:S.n|0};
+// Séquence projetée : accueil, puis pour chaque situation 4 temps, puis retour collectif
+var SEQ=[{t:"welcome"}];
+CASES.forEach(function(_,i){SEQ.push({t:"story",i:i},{t:"reveal",i:i},{t:"talk",i:i})});
+SEQ.push({t:"hands"});
+var timerId=null,remain=300;
+
+function renderS(){
+ document.body.className="stage";
+ if(S.n<0)S.n=0;if(S.n>=SEQ.length)S.n=SEQ.length-1;
+ var s=SEQ[S.n],h="",c=s.i!==undefined?CASES[s.i]:null;
+ var dots='<div class="s-dots">'+CASES.map(function(_,k){return '<span class="'+(c&&k<=s.i||s.t==="hands"?"on":"")+'"></span>'}).join("")+'</div>';
+ if(s.t==="welcome"){
+  h='<div class="s-eyebrow">Brise-glace</div><h1 class="s-title">Vous feriez quoi, vous ?</h1>'+
+   '<p class="s-text">Trois situations où l’IA s’invite au travail. Vous votez seul·e, une information nouvelle arrive, vous pouvez changer d’avis. Enfin, discutez de votre choix ensemble.</p>'+
+   '<p class="s-text" style="font-weight:700">Scannez le code QR avec votre téléphone.</p>';
+ }else if(s.t==="story"){
+  h='<div class="s-eyebrow">Situation '+(s.i+1)+' · '+esc(c.topic)+'</div><h1 class="s-title">'+esc(c.title)+'</h1><p class="s-text">'+esc(c.story)+'</p>'+
+   '<div class="s-opts">'+c.options.map(function(t,n){return '<div class="s-opt"><span class="l">'+L[n]+'</span><span>'+esc(t)+'</span></div>'}).join("")+'</div>';
+ }else if(s.t==="reveal"){
+  h='<div class="s-eyebrow">Situation '+(s.i+1)+' · Nouvelle information</div><div class="s-box"><p class="s-text" style="margin:0">'+esc(c.reveal)+'</p></div>'+
+   '<p class="s-text">'+esc(c.after)+'</p>';
+ }else if(s.t==="talk"){
+  h='<div class="s-eyebrow">Situation '+(s.i+1)+' · À votre table</div><h1 class="s-title">'+esc(c.discuss)+'</h1>'+
+   '<div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap"><div class="timer" id="timer">5:00</div><button class="s-btn" id="t-go">Lancer les 5 minutes</button></div>';
+ }else{
+  h='<div class="s-eyebrow">Retour collectif</div><h1 class="s-title">Qu’est-ce qui a fait bouger votre jugement ?</h1><div class="s-hands">'+
+   '<div class="s-hand">Levez la main si vous avez changé d’avis au moins une fois.</div>'+
+   '<div class="s-hand">Gardez-la levée si c’est votre table, et non la nouvelle information, qui vous a fait changer.</div>'+
+   '<div class="s-hand">Une table : quelle information vous a le plus fait hésiter ?</div></div>';
+ }
+ root.innerHTML='<div class="stage-wrap"><div class="stage-top"><div class="ev-name">Innovation RH &amp; Cie<small>L’IA en RH : gagner du temps sans perdre l’humain</small></div><div class="count">'+(S.n+1)+' / '+SEQ.length+'</div></div>'+
+  '<main class="stage-main">'+h+'</main>'+
+  '<nav class="stage-nav">'+dots+'<div style="display:flex;gap:10px"><button class="s-btn" id="prev">← Précédent</button><button class="s-btn main" id="nxt">Suivant →</button></div></nav></div>';
+ document.getElementById("prev").onclick=function(){move(-1)};
+ document.getElementById("nxt").onclick=function(){move(1)};
+ stopTimer();
+ var tg=document.getElementById("t-go");
+ if(tg)tg.onclick=function(){startTimer();tg.textContent="Relancer"};
+}
+function move(d){S.n+=d;store("vfq-s",S);renderS()}
+function stopTimer(){if(timerId){clearInterval(timerId);timerId=null}remain=300}
+function startTimer(){stopTimer();var el=document.getElementById("timer");
+ timerId=setInterval(function(){remain--;if(!el||!document.body.contains(el)){stopTimer();return}
+  el.textContent=Math.floor(Math.max(remain,0)/60)+":"+("0"+Math.max(remain,0)%60).slice(-2);
+  if(remain<=0){clearInterval(timerId);timerId=null;el.textContent="Temps !"}},1000)}
+
+document.addEventListener("keydown",function(e){
+ if(!document.body.classList.contains("stage"))return;
+ if(e.key==="ArrowRight"||e.key==="PageDown"||e.key===" "){e.preventDefault();move(1)}
+ if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();move(-1)}
+});
+
+/* ---------- Routage ---------- */
+function route(){if(location.hash==="#ecran")renderS();else renderP()}
+window.addEventListener("hashchange",route);
+route();
+})();
+</script>
+</body>
+</html>
